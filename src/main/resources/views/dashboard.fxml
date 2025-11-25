@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DashboardController">
+   <left>
+      <VBox styleClass="sidebar" spacing="10.0">
+         <children>
+            <Label text="EMS" styleClass="sidebar-title">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </Label>
+            <Button fx:id="dashboardBtn" text="Dashboard" styleClass="sidebar-button" onAction="#showDashboard" />
+            <Button fx:id="employeesBtn" text="Employees" styleClass="sidebar-button" onAction="#openEmployees" />
+            <Button fx:id="departmentsBtn" text="Departments" styleClass="sidebar-button" onAction="#openDepartments" />
+            <Button fx:id="leavesBtn" text="Leave Requests" styleClass="sidebar-button" onAction="#openLeaves" />
+            <Region VBox.vgrow="ALWAYS" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+   </left>
+   <center>
+      <VBox spacing="20.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="header">
+               <children>
+                  <Label text="Dashboard" styleClass="page-title">
+                     <font>
+                        <Font name="System Bold" size="28.0" />
+                     </font>
+                  </Label>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Label fx:id="refreshLabel" text="Last updated: Now" styleClass="refresh-label" />
+               </children>
+               <padding>
+                  <Insets bottom="15.0" left="30.0" right="30.0" top="15.0" />
+               </padding>
+            </HBox>
+            <GridPane hgap="20.0" vgap="20.0" styleClass="stats-grid">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" prefWidth="250.0" />
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" prefWidth="250.0" />
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" prefWidth="250.0" />
+                  <ColumnConstraints hgrow="ALWAYS" minWidth="200.0" prefWidth="250.0" />
+               </columnConstraints>
+               <children>
+                  <VBox alignment="CENTER" spacing="10.0" styleClass="stat-card" GridPane.columnIndex="0">
+                     <children>
+                        <Label text="👥" styleClass="stat-icon" />
+                        <Label fx:id="totalEmployeesLabel" text="0" styleClass="stat-number" />
+                        <Label text="Total Employees" styleClass="stat-label" />
+                     </children>
+                     <padding>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                     </padding>
+                  </VBox>
+                  <VBox alignment="CENTER" spacing="10.0" styleClass="stat-card" GridPane.columnIndex="1">
+                     <children>
+                        <Label text="🏢" styleClass="stat-icon" />
+                        <Label fx:id="totalDepartmentsLabel" text="0" styleClass="stat-number" />
+                        <Label text="Departments" styleClass="stat-label" />
+                     </children>
+                     <padding>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                     </padding>
+                  </VBox>
+                  <VBox alignment="CENTER" spacing="10.0" styleClass="stat-card" GridPane.columnIndex="2">
+                     <children>
+                        <Label text="⏳" styleClass="stat-icon" />
+                        <Label fx:id="pendingLeavesLabel" text="0" styleClass="stat-number-pending" />
+                        <Label text="Pending Leaves" styleClass="stat-label" />
+                     </children>
+                     <padding>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                     </padding>
+                  </VBox>
+                  <VBox alignment="CENTER" spacing="10.0" styleClass="stat-card" GridPane.columnIndex="3">
+                     <children>
+                        <Label text="✅" styleClass="stat-icon" />
+                        <Label fx:id="approvedLeavesLabel" text="0" styleClass="stat-number-approved" />
+                        <Label text="Approved Leaves" styleClass="stat-label" />
+                     </children>
+                     <padding>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                     </padding>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+               </padding>
+            </GridPane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
