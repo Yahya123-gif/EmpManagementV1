@@ -1,34 +1,12 @@
 # Employee Management System
 
-A modern JavaFX desktop application for managing employees, departments, and leave requests with MongoDB database integration.
-
-## 📋 Table of Contents
-
-- [Features](#features)
-- [Technologies](#technologies)
-- [Project Structure](#project-structure)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Architecture](#architecture)
-- [Screenshots](#screenshots)
-- [Contributing](#contributing)
-- [License](#license)
-
-## ✨ Features
-
-### Dashboard
-- Real-time statistics overview
-- Quick navigation to all modules
-- Visual stat cards with icons
-- Last updated timestamp
 
 ### Employee Management
-- ✅ Add new employees
-- ✏️ Edit employee information
-- 🗑️ Delete employees
-- 📊 View all employees in a modern table
-- 🔍 Search and filter capabilities
+- Add new employees
+- Edit employee information
+- Delete employees
+- View all employees in a modern table
+- Search and filter capabilities
 
 ### Department Management
 - ✅ Create departments
