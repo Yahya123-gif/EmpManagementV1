@@ -16,6 +16,7 @@ import services.DepartmentService;
 
 import java.time.format.DateTimeFormatter;
 
+// Contrôleur pour la page de gestion des employés
 public class EmployeeController {
     @FXML
     private TableView<Employee> employeeTable;
@@ -48,6 +49,7 @@ public class EmployeeController {
     private DepartmentService departmentService;
     private ObservableList<Employee> employeeList;
 
+    // Initialisation au chargement de la page
     @FXML
     public void initialize() {
         employeeService = new EmployeeService();
@@ -57,46 +59,51 @@ public class EmployeeController {
         loadEmployees();
     }
 
+    // Configure les colonnes du tableau
     private void setupTable() {
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         positionColumn.setCellValueFactory(new PropertyValueFactory<>("position"));
+        
+        // Colonne département : affiche le nom du département ou "N/A"
         departmentColumn.setCellValueFactory(cellData -> {
             Employee emp = cellData.getValue();
             if (emp.getDepartmentId() != null) {
                 var dept = departmentService.findById(emp.getDepartmentId());
-                return javafx.beans.binding.Bindings.createStringBinding(
-                    () -> dept != null ? dept.getName() : "N/A"
-                );
+                String deptName = dept != null ? dept.getName() : "N/A";
+                return javafx.beans.binding.Bindings.createStringBinding(() -> deptName);
             }
             return javafx.beans.binding.Bindings.createStringBinding(() -> "N/A");
         });
+        
+        // Colonne date d'embauche : format yyyy-MM-dd
         hireDateColumn.setCellValueFactory(cellData -> {
             Employee emp = cellData.getValue();
             if (emp.getHireDate() != null) {
-                return javafx.beans.binding.Bindings.createStringBinding(
-                    () -> emp.getHireDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-                );
+                String formattedDate = emp.getHireDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                return javafx.beans.binding.Bindings.createStringBinding(() -> formattedDate);
             }
             return javafx.beans.binding.Bindings.createStringBinding(() -> "");
         });
-        employeeTable.setItems(employeeList);
         
-        // Improve table appearance
+        employeeTable.setItems(employeeList);
         employeeTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         employeeTable.setStyle("-fx-selection-bar: transparent;");
     }
 
+    // Charge la liste des employés depuis la base de données
     private void loadEmployees() {
         employeeList.clear();
         employeeList.addAll(employeeService.findAll());
     }
 
+    // Ouvre le formulaire pour ajouter un nouvel employé
     @FXML
     private void handleAdd() {
         showEmployeeForm(null);
     }
 
+    // Ouvre le formulaire pour modifier un employé sélectionné
     @FXML
     private void handleEdit() {
         Employee selected = employeeTable.getSelectionModel().getSelectedItem();
@@ -107,6 +114,7 @@ public class EmployeeController {
         }
     }
 
+    // Supprime l'employé sélectionné après confirmation
     @FXML
     private void handleDelete() {
         Employee selected = employeeTable.getSelectionModel().getSelectedItem();
@@ -124,6 +132,7 @@ public class EmployeeController {
         }
     }
 
+    // Navigation vers le dashboard
     @FXML
     private void handleDashboard() {
         setActiveButton(dashboardBtn);
@@ -135,18 +144,21 @@ public class EmployeeController {
         setActiveButton(employeesBtn);
     }
 
+    // Navigation vers la page des départements
     @FXML
     private void handleDepartments() {
         setActiveButton(departmentsBtn);
         loadScene("/views/department.fxml", "Department Management");
     }
 
+    // Navigation vers la page des congés
     @FXML
     private void handleLeaves() {
         setActiveButton(leavesBtn);
         loadScene("/views/leave.fxml", "Leave Management");
     }
 
+    // Met en évidence le bouton actif dans le menu
     private void setActiveButton(Button button) {
         dashboardBtn.getStyleClass().remove("sidebar-button-active");
         employeesBtn.getStyleClass().remove("sidebar-button-active");
@@ -156,6 +168,7 @@ public class EmployeeController {
         button.getStyleClass().add("sidebar-button-active");
     }
 
+    // Ouvre la fenêtre du formulaire d'employé
     private void showEmployeeForm(Employee employee) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/employee-form.fxml"));
@@ -177,10 +190,12 @@ public class EmployeeController {
         }
     }
 
+    // Rafraîchit le tableau après une modification
     public void refreshTable() {
         loadEmployees();
     }
 
+    // Charge une nouvelle page/scène
     private void loadScene(String fxml, String title) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
@@ -195,6 +210,7 @@ public class EmployeeController {
         }
     }
 
+    // Affiche un message d'alerte
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning");

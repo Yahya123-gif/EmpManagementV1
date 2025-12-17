@@ -2,6 +2,7 @@ package model;
 
 import java.time.LocalDate;
 
+// Classe pour représenter un employé dans le système
 public class Employee {
     private String id;
     private String name;
@@ -10,9 +11,11 @@ public class Employee {
     private String departmentId;
     private LocalDate hireDate;
 
+    // Constructeur par défaut
     public Employee() {
     }
 
+    // Constructeur avec tous les paramètres
     public Employee(String id, String name, String email, String position, String departmentId, LocalDate hireDate) {
         this.id = id;
         this.name = name;

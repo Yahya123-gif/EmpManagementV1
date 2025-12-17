@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+// Service pour gérer les demandes de congé dans la base de données
 public class LeaveService {
     private MongoCollection<Document> collection;
     private EmployeeService employeeService;
@@ -22,6 +23,7 @@ public class LeaveService {
         this.employeeService = new EmployeeService();
     }
 
+    // Sauvegarde une demande de congé (ajout ou modification)
     public void save(LeaveRequest leaveRequest) {
         Document doc = new Document();
         if (leaveRequest.getId() != null && !leaveRequest.getId().isEmpty()) {
@@ -33,6 +35,7 @@ public class LeaveService {
            .append("reason", leaveRequest.getReason())
            .append("status", leaveRequest.getStatus() != null ? leaveRequest.getStatus() : "PENDING");
 
+        // Si c'est nouveau, on insère, sinon on met à jour
         if (leaveRequest.getId() == null || leaveRequest.getId().isEmpty()) {
             collection.insertOne(doc);
             leaveRequest.setId(doc.getObjectId("_id").toString());
@@ -40,7 +43,7 @@ public class LeaveService {
             collection.replaceOne(new Document("_id", new ObjectId(leaveRequest.getId())), doc);
         }
         
-        // Update employee name
+        // Récupérer le nom de l'employé pour l'affichage
         if (leaveRequest.getEmployeeId() != null) {
             var employee = employeeService.findById(leaveRequest.getEmployeeId());
             if (employee != null) {
@@ -49,6 +52,7 @@ public class LeaveService {
         }
     }
 
+    // Récupère toutes les demandes de congé
     public List<LeaveRequest> findAll() {
         List<LeaveRequest> leaves = new ArrayList<>();
         for (Document doc : collection.find()) {
@@ -64,6 +68,7 @@ public class LeaveService {
         return leaves;
     }
 
+    // Trouve une demande de congé par son ID
     public LeaveRequest findById(String id) {
         Document doc = collection.find(new Document("_id", new ObjectId(id))).first();
         if (doc != null) {
@@ -79,10 +84,12 @@ public class LeaveService {
         return null;
     }
 
+    // Supprime une demande de congé
     public void delete(String id) {
         collection.deleteOne(new Document("_id", new ObjectId(id)));
     }
 
+    // Met à jour le statut d'une demande (APPROVED, REJECTED, etc.)
     public void updateStatus(String id, String status) {
         collection.updateOne(
             new Document("_id", new ObjectId(id)),
@@ -90,6 +97,7 @@ public class LeaveService {
         );
     }
 
+    // Convertit un Document MongoDB en objet LeaveRequest
     private LeaveRequest mapToLeaveRequest(Document doc) {
         LeaveRequest leave = new LeaveRequest();
         leave.setId(doc.getObjectId("_id").toString());
@@ -107,11 +115,13 @@ public class LeaveService {
         return leave;
     }
 
+    // Convertit LocalDate en Date pour MongoDB
     private Date convertToDate(LocalDate localDate) {
         if (localDate == null) return null;
         return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
+    // Convertit Date en LocalDate
     private LocalDate convertToLocalDate(Date date) {
         if (date == null) return null;
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();

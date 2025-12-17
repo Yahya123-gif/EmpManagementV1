@@ -9,6 +9,7 @@ import services.DepartmentService;
 
 import java.time.LocalDate;
 
+// Contrôleur pour le formulaire d'ajout/modification d'employé
 public class EmployeeFormController {
     @FXML
     private TextField nameField;
@@ -30,14 +31,16 @@ public class EmployeeFormController {
     private EmployeeService employeeService;
     private DepartmentService departmentService;
 
+    // Initialisation du formulaire au chargement
     @FXML
     public void initialize() {
         employeeService = new EmployeeService();
         departmentService = new DepartmentService();
-        hireDatePicker.setValue(LocalDate.now());
+        hireDatePicker.setValue(LocalDate.now()); // Date par défaut = aujourd'hui
         loadDepartments();
     }
 
+    // Remplit le formulaire avec les données d'un employé existant (pour modification)
     public void setEmployee(Employee employee) {
         this.employee = employee;
         if (employee != null) {
@@ -58,6 +61,7 @@ public class EmployeeFormController {
         this.employeeController = controller;
     }
 
+    // Charge la liste des départements dans le ComboBox
     private void loadDepartments() {
         departmentCombo.getItems().clear();
         departmentService.findAll().forEach(dept -> {
@@ -65,23 +69,28 @@ public class EmployeeFormController {
         });
     }
 
+    // Sauvegarde les données du formulaire
     @FXML
     private void handleSave() {
+        // Vérification que tous les champs sont remplis
         if (nameField.getText().trim().isEmpty() || emailField.getText().trim().isEmpty() || 
             positionField.getText().trim().isEmpty() || hireDatePicker.getValue() == null) {
             showAlert("Please fill all fields");
             return;
         }
 
+        // Créer un nouvel employé si on est en mode ajout
         if (employee == null) {
             employee = new Employee();
         }
 
+        // Récupérer les valeurs des champs
         employee.setName(nameField.getText().trim());
         employee.setEmail(emailField.getText().trim());
         employee.setPosition(positionField.getText().trim());
         employee.setHireDate(hireDatePicker.getValue());
         
+        // Récupérer l'ID du département sélectionné
         if (departmentCombo.getSelectionModel().getSelectedItem() != null) {
             String selected = departmentCombo.getSelectionModel().getSelectedItem();
             employee.setDepartmentId(selected.split(" - ")[0]);
@@ -92,6 +101,7 @@ public class EmployeeFormController {
         closeWindow();
     }
 
+    // Annule et ferme la fenêtre
     @FXML
     private void handleCancel() {
         closeWindow();
@@ -102,6 +112,7 @@ public class EmployeeFormController {
         stage.close();
     }
 
+    // Affiche un message d'alerte
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning");

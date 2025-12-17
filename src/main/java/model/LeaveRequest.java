@@ -2,6 +2,7 @@ package model;
 
 import java.time.LocalDate;
 
+// Classe pour représenter une demande de congé
 public class LeaveRequest {
     private String id;
     private String employeeId;
@@ -11,9 +12,11 @@ public class LeaveRequest {
     private String reason;
     private String status; // PENDING, APPROVED, REJECTED
 
+    // Constructeur par défaut
     public LeaveRequest() {
     }
 
+    // Constructeur avec tous les paramètres
     public LeaveRequest(String id, String employeeId, String employeeName, LocalDate startDate, LocalDate endDate, String reason, String status) {
         this.id = id;
         this.employeeId = employeeId;

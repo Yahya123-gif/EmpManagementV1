@@ -1,13 +1,16 @@
 package model;
 
+// Classe pour représenter un département dans le système
 public class Department {
     private String id;
     private String name;
     private String description;
 
+    // Constructeur par défaut
     public Department() {
     }
 
+    // Constructeur avec tous les paramètres
     public Department(String id, String name, String description) {
         this.id = id;
         this.name = name;
